@@ -1,5 +1,6 @@
 src/
 pkg/
+download/
 *.bin
 *.deb
 *.gz
