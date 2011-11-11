@@ -10,8 +10,8 @@ groups=('mingw-w64')
 depends=()
 makedepends=()
 optdepends=()
-provides=()
-conflicts=()
+provides=('mingw-w64-headers')
+conflicts=('mingw-w64-headers')
 replaces=()
 backup=()
 options=('!strip' '!libtool')
@@ -40,10 +40,5 @@ package() {
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/ddk/readme.txt "${pkgdir}/usr/share/licenses/${pkgname}/ddk-readme.txt"
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/direct-x/COPYING.LIB "${pkgdir}/usr/share/licenses/${pkgname}/direct-x-COPYING.LIB"
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/direct-x/readme.txt "${pkgdir}/usr/share/licenses/${pkgname}/direct-x-readme.txt"
-  # remove headers provided in mingw-w64-winpthreads
-  rm ${pkgdir}/usr/i686-w64-mingw32/include/pthread_time.h
-  rm ${pkgdir}/usr/i686-w64-mingw32/include/pthread_unistd.h
-  rm ${pkgdir}/usr/x86_64-w64-mingw32/include/pthread_time.h
-  rm ${pkgdir}/usr/x86_64-w64-mingw32/include/pthread_unistd.h
 }
 
