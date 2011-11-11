@@ -30,7 +30,7 @@ build() {
   echo ${pkgver} > gcc/BASE-VER
    
   for _target in ${_targets}; do
-    mkdir -p gcc-build-${_target} && cd gcc-build-${_target}
+    mkdir -p ${srcdir}/gcc-build-${_target} && cd ${srcdir}/gcc-build-${_target}
     
     ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
         --target=${_target} \
@@ -46,6 +46,7 @@ build() {
 
 package() {
   for _target in ${_targets}; do
-    make install-gcc
+    cd ${srcdir}/gcc-build-${_target}
+    make prefix=${pkgdir}/usr install-gcc
   done
 }
