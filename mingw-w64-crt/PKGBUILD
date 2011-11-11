@@ -14,7 +14,7 @@ provides=()
 conflicts=()
 replaces=()
 backup=()
-options=('!strip')
+options=('!strip' '!buildflags')
 source=(http://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v$pkgver.tar.bz2)
 md5sums=('5c6341fbe25576be6f899cbda133cb4a')
 
@@ -27,9 +27,7 @@ build() {
     elif [ ${_target} == "x86_64-w64-mingw32" ]; then
         _crt_configure_args="--disable-lib32 --enable-lib64"
     fi
-    cd "${srcdir}"
-    mkdir -p crt-build-${_target}
-    cd winpthreads-build-${_target}
+    mkdir -p ${srcdir}/crt-build-${_target} && cd ${srcdir}/crt-build-${_target}
     ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-crt/configure --prefix=/usr \
         --host=${_target} --enable-wildcard \
         ${_crt_configure_args}

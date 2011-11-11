@@ -14,7 +14,7 @@ provides=()
 conflicts=()
 replaces=()
 backup=()
-options=('!strip')
+options=('!strip' '!buildflags')
 source=()
 md5sums=()
 
