@@ -1,4 +1,4 @@
-# Maintainer: rubenvb
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-gcc-base
 pkgver=4.6.2
 pkgrel=1
@@ -38,7 +38,8 @@ build() {
         --enable-shared --enable-static \
         --enable-threads=win32 \
         --with-system-zlib --with-ppl --enable-cloog-backend=isl \
-        --enable-lto \
+        --enable-lto --enable-sjlj-exceptions --enable-libgomp \
+        --disable-nls \
         --disable-multilib --enable-checking=release
     make all-gcc
   done
@@ -49,4 +50,7 @@ package() {
     cd ${srcdir}/gcc-build-${_target}
     make prefix=${pkgdir}/usr install-gcc
   done
+  # remove unnecessary files
+  rm -r ${pkgdir}/usr/share/man
+  rm -r ${pkgdir}/usr/share/info
 }

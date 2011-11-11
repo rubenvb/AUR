@@ -1,4 +1,4 @@
-# Maintainer: rubenvb
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-gcc-base
 pkgver=4.6.2
 pkgrel=1
@@ -8,16 +8,16 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=('mingw-w64')
 depends=('zlib' 'libmpc' 'ppl' 'cloog')
-makedepends=('mingw-w64-binutils' 'mingw-w64-headers' 'mingw-w64-gcc-base' 'libmpc' 'cloog' 'ppl')
+makedepends=('mingw-w64-binutils' 'mingw-w64-headers' 'mingw-w64-gcc-base' 'mingw-w64-winpthreads' 'libmpc' 'cloog' 'ppl')
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
-provides=()
-conflicts=('mingw-w64-gcc-base')
+provides=('mingw-w64-gcc-base')
+conflicts=()
 replaces=()
 backup=()
 options=('!libtool' '!emptydirs')
-source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-core-${pkgver}.tar.bz2)
-md5sums=('780f614ab18c7a9066dec6387d7490b2')
+source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.bz2)
+md5sums=('028115c4fbfb6cfd75d6369f4a90d87e')
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
@@ -28,18 +28,18 @@ build() {
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
 
   echo ${pkgver} > gcc/BASE-VER
-   
+
   for _target in ${_targets}; do
-    mkdir -p gcc-build-${_target} && cd gcc-build-${_target}
+    mkdir -p ${srcdir}/gcc-build-${_target} && cd ${srcdir}/gcc-build-${_target}
     
     ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
         --target=${_target} \
-        --enable-languages=c,lto,c++,objc,objc++,fortran \
+        --enable-languages=c,lto,c++,objc,obj-c++,fortran \
         --enable-shared --enable-static \
         --enable-threads=win32 --enable-fully-dynamic-string \
         --with-system-zlib --with-ppl --enable-cloog-backend=isl \
-        --enable-lto --enable-sjlj-exceptions \
-        --disable-nls --disable-werror \
+        --enable-lto --enable-sjlj-exceptions --enable-libgomp \
+        --disable-nls \
         --disable-multilib --enable-checking=release
     make all
   done
@@ -47,6 +47,10 @@ build() {
 
 package() {
   for _target in ${_targets}; do
-    make install
+    cd gcc-build-${_target}
+    make prefix=${pkgdir}/usr install
   done
+  # remove unnecessary files
+  rm -r ${pkgdir}/usr/share/man
+  rm -r ${pkgdir}/usr/share/info
 }

@@ -1,4 +1,4 @@
-# Maintainer: rubenvb
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-headers
 pkgver=2.0
 pkgrel=1
@@ -22,20 +22,23 @@ _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
 build() {
   for _target in ${_targets}; do
-    cd "${srcdir}/mingw-w64-v${pkgver}"
+    cd "${srcdir}"
     mkdir -p headers-build-${_target}
     cd headers-build-${_target}
-    ../mingw-w64-headers/configure --prefix=/usr --enable-sdk=all --host=${_target}
+    ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/configure --prefix=/usr --enable-sdk=all --host=${_target}
   done
 }
 
 package() {
   for _target in ${_targets}; do
-    cd "${srcdir}/mingw-w64-v${pkgver}/headers-build-${_target}"
+    cd "${srcdir}/headers-build-${_target}"
     make DESTDIR="${pkgdir}" install
   done
 
-  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING.MinGW-w64.txt"
-  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt "$pkgdir/usr/share/licenses/$pkgname/COPYING.MinGW-w64-runtime.txt"
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt "${pkgdir}/usr/share/licenses/${pkgname}/COPYING.MinGW-w64.txt"
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/COPYING.MinGW-w64-runtime/COPYING.MinGW-w64-runtime.txt "${pkgdir}/usr/share/licenses/${pkgname}/COPYING.MinGW-w64-runtime.txt"
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/ddk/readme.txt "${pkgdir}/usr/share/licenses/${pkgname}/ddk-readme.txt"
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/direct-x/COPYING.LIB "${pkgdir}/usr/share/licenses/${pkgname}/direct-x-COPYING.LIB"
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/direct-x/readme.txt "${pkgdir}/usr/share/licenses/${pkgname}/direct-x-readme.txt"
 }
 
