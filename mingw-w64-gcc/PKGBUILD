@@ -1,5 +1,5 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
-pkgname=mingw-w64-gcc-base
+pkgname=mingw-w64-gcc
 pkgver=4.6.2
 pkgrel=1
 pkgdesc="Cross GCC for the MinGW-w64 cross-compiler"
@@ -8,14 +8,14 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=('mingw-w64')
 depends=('zlib' 'libmpc' 'ppl' 'cloog')
-makedepends=('mingw-w64-binutils' 'mingw-w64-headers' 'mingw-w64-gcc-base' 'mingw-w64-winpthreads' 'libmpc' 'cloog' 'ppl')
+makedepends=('mingw-w64-binutils' 'mingw-w64-headers' 'mingw-w64-crt' 'mingw-w64-winpthreads' 'libmpc' 'cloog' 'ppl')
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
 provides=('mingw-w64-gcc-base')
-conflicts=()
+conflicts=('mingw-w64-gcc-base')
 replaces=()
 backup=()
-options=('!libtool' '!emptydirs')
+options=('!strip' '!libtool' '!emptydirs' '!buildflags')
 source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.bz2)
 md5sums=('028115c4fbfb6cfd75d6369f4a90d87e')
 
@@ -47,10 +47,9 @@ build() {
 
 package() {
   for _target in ${_targets}; do
-    cd gcc-build-${_target}
+    cd ${srcdir}/gcc-build-${_target}
     make prefix=${pkgdir}/usr install
   done
   # remove unnecessary files
-  rm -r ${pkgdir}/usr/share/man
-  rm -r ${pkgdir}/usr/share/info
+  rm -r ${pkgdir}/usr/share
 }
