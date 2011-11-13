@@ -1,4 +1,32 @@
 These are my Arch Linux PKGBUILD files for a proper 
 MinGW-w64 cross-compilation environment.
 
-Find them in the AUR for more details.
+Find them in the AUR for more details that are missing.
+
+This general build order for a mingw-w64 cross-compiler
+ is necessary:
+
+1. headers binutils
+2. gcc-base
+3. crt winpthreads
+4. gcc
+
+One PKGBUILD will now take care of everything:
+Sources (preferably Arch official versions for continuity):
+ - gcc
+ - binutils
+ - mingw-w64 (headers+crt) latest stable versions
+ - winpthreads (currently svn only :()
+
+Things that require small/large hacks:
+1. oneline sed command to prevent libiberty.a installation
+2. split gcc package in gcc, (gcc-c++,?) gcc-fortran, gcc-ada, 
+                        gcc-java, gcc-objc, gcc-obj-c++
+
+The resulting binary packages:
+1. mingw-w64 (contains headers, crt, and winpthreads due to
+              header collision issue)
+2. mingw-w64-binutils: because it can be split off
+3. mingw-w64-gcc-*:
+
+All in group 'mingw-w64' or 'mingw-w64-toolchain'.

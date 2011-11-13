@@ -1,38 +1,39 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-headers
 pkgver=2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="MinGW-w64 headers for Windows"
 arch=('any')
 url="http://mingw-w64.sourceforge.net"
 license=('custom')
-groups=('mingw-w64')
+groups=('mingw-w64-toolchain' 'mingw-w64')
 depends=()
 makedepends=()
 optdepends=()
 provides=()
-conflicts=('mingw-w64-headers-nowinpthreads')
+conflicts=()
 replaces=()
 backup=()
 options=('!strip' '!libtool')
-source=(http://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v$pkgver.tar.bz2)
+source=(http://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v${pkgver}.tar.bz2)
 md5sums=('5c6341fbe25576be6f899cbda133cb4a')
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
 build() {
   for _target in ${_targets}; do
-    cd "${srcdir}"
-    mkdir -p headers-build-${_target}
-    cd headers-build-${_target}
+    msg "Configuring ${_target} headers"
+    cd ${srcdir}
+    mkdir -p headers-${_target} && cd headers-${_target}
     ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/configure --prefix=/usr --enable-sdk=all --host=${_target}
   done
 }
 
 package() {
   for _target in ${_targets}; do
-    cd "${srcdir}/headers-build-${_target}"
-    make DESTDIR="${pkgdir}" install
+    msg "Installing ${_target} headers"
+    cd ${srcdir}/headers-${_target}
+    make DESTDIR=${pkgdir}/usr install
   done
 
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/COPYING.MinGW-w64/COPYING.MinGW-w64.txt "${pkgdir}/usr/share/licenses/${pkgname}/COPYING.MinGW-w64.txt"
@@ -40,10 +41,5 @@ package() {
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/ddk/readme.txt "${pkgdir}/usr/share/licenses/${pkgname}/ddk-readme.txt"
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/direct-x/COPYING.LIB "${pkgdir}/usr/share/licenses/${pkgname}/direct-x-COPYING.LIB"
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/direct-x/readme.txt "${pkgdir}/usr/share/licenses/${pkgname}/direct-x-readme.txt"
-  # remove headers provided in mingw-w64-winpthreads
-  rm ${pkgdir}/usr/i686-w64-mingw32/include/pthread_time.h
-  rm ${pkgdir}/usr/i686-w64-mingw32/include/pthread_unistd.h
-  rm ${pkgdir}/usr/x86_64-w64-mingw32/include/pthread_time.h
-  rm ${pkgdir}/usr/x86_64-w64-mingw32/include/pthread_unistd.h
 }
 
