@@ -30,6 +30,7 @@ build() {
   echo ${pkgver} > gcc/BASE-VER
    
   for _target in ${_targets}; do
+    msg "Building ${_target} GCC C compiler"
     mkdir -p ${srcdir}/gcc-build-${_target} && cd ${srcdir}/gcc-build-${_target}
     
     ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
@@ -47,10 +48,12 @@ build() {
 
 package() {
   for _target in ${_targets}; do
+    msg "Installing ${_target} GCC C compiler"
     cd ${srcdir}/gcc-build-${_target}
     make prefix=${pkgdir}/usr install-gcc
   done
   # remove unnecessary files
+  msg "Removing man and info pages"
   rm -r ${pkgdir}/usr/share/man
   rm -r ${pkgdir}/usr/share/info
 }
