@@ -11,15 +11,19 @@ This general build order for a mingw-w64 cross-compiler
 3. crt winpthreads
 4. gcc
 
-One PKGBUILD for everything is fugly...
-The Final Build+Install Order:
-1. mingw-w64-headers-base
-2. mingw-w64-binutils
-3. mingw-w64-gcc-base
-4. mingw-w64-crt
-5. mingw-w64-headers (replaces mingw-w64-headers-base)
-5. mingw-w64-winpthreads
-6. mingw-w64-gcc (replaces mingw-w64-gcc-base)
+One PKGBUILD for everything is fugly, so there's 7,
+ including 2 bootstrap packages...
+
+The Final Build/Install order
+1. build+install mingw-w64-headers-base
+2. build+install mingw-w64-binutils
+3. build+install mingw-w64-gcc-base
+4. build+install mingw-w64-crt
+5. build mingw-w64-winpthreads
+6. build mingw-w64-headers
+7. install mingw-w64-winpthreads
+8. install mingw-w64-headers (replaces mingw-w64-headers-base)
+9. build+install mingw-w64-gcc (replaces mingw-w64-gcc-base)
 
 The resulting binary packages that non-AUR-users
  (once mingw-w64 is in a binary repo) should install:

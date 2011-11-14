@@ -7,7 +7,7 @@ arch=('i686' 'x86_64')
 url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=('mingw-w64-bootstrap' 'mingw-w64')
-depends=('zlib' 'libmpc' 'ppl' 'cloog' 'mingw-w64-binutils' 'mingw-w64-headers-base')
+depends=('zlib' 'libmpc' 'ppl' 'cloog' 'mingw-w64-binutils' 'mingw-w64-headers')
 makedepends=('libmpc' 'cloog' 'ppl')
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
@@ -47,7 +47,7 @@ package() {
   for _target in ${_targets}; do
     msg "Installing ${_target} GCC C compiler"
     cd ${srcdir}/gcc-build-${_target}
-    make DESTDIR=${pkgdir}/usr install-gcc
+    make DESTDIR=${pkgdir} install-gcc
   done
   # remove unnecessary files
   msg "Removing man and info pages"
