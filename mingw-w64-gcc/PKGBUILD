@@ -34,7 +34,7 @@ build() {
     
     ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
         --target=${_target} \
-        --enable-languages=c,lto,c++,objc,obj-c++,fortran \
+        --enable-languages=c,lto,c++,objc,obj-c++,fortran,ada,java \
         --enable-shared --enable-static \
         --enable-threads=win32 --enable-fully-dynamic-string \
         --with-system-zlib --with-ppl --enable-cloog-backend=isl \

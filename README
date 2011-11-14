@@ -11,22 +11,23 @@ This general build order for a mingw-w64 cross-compiler
 3. crt winpthreads
 4. gcc
 
-One PKGBUILD will now take care of everything:
-Sources (preferably Arch official versions for continuity):
- - gcc
- - binutils
- - mingw-w64 (headers+crt) latest stable versions
- - winpthreads (currently svn only :()
+One PKGBUILD for everything is fugly...
+The Final Build+Install Order:
+1. mingw-w64-headers-base
+2. mingw-w64-binutils
+3. mingw-w64-gcc-base
+4. mingw-w64-crt
+5. mingw-w64-headers (replaces mingw-w64-headers-base)
+5. mingw-w64-winpthreads
+6. mingw-w64-gcc (replaces mingw-w64-gcc-base)
 
-Things that require small/large hacks:
-1. oneline sed command to prevent libiberty.a installation
-2. split gcc package in gcc, (gcc-c++,?) gcc-fortran, gcc-ada, 
-                        gcc-java, gcc-objc, gcc-obj-c++
+The resulting binary packages that non-AUR-users
+ (once mingw-w64 is in a binary repo) should install:
+ - mingw-w64-headers
+ - mingw-w64-crt
+ - mingw-w64-winpthreads
+ - mingw-w64-binutils
+ - mingw-w64-gcc
 
-The resulting binary packages:
-1. mingw-w64 (contains headers, crt, and winpthreads due to
-              header collision issue)
-2. mingw-w64-binutils: because it can be split off
-3. mingw-w64-gcc-*:
-
-All in group 'mingw-w64' or 'mingw-w64-toolchain'.
+All in group 'mingw-w64-toolchain'. At the end of the install process,
+ you should have no packages from the group 'mingw-w64-bootstrap' installed.
