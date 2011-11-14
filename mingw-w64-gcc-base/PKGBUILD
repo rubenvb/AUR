@@ -47,7 +47,7 @@ package() {
   for _target in ${_targets}; do
     msg "Installing ${_target} GCC C compiler"
     cd ${srcdir}/gcc-build-${_target}
-    make DESTDIR=${pkgdir} install-gcc
+    make prefix=${pkgdir}/usr install-gcc
   done
   # remove unnecessary files
   msg "Removing man and info pages"

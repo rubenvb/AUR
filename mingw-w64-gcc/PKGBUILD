@@ -48,7 +48,7 @@ build() {
 package() {
   for _target in ${_targets}; do
     cd ${srcdir}/gcc-build-${_target}
-    make DESTDIR=${pkgdir} install
+    make prefix=${pkgdir}/usr install
   done
   # remove unnecessary files
   rm -r ${pkgdir}/usr/share

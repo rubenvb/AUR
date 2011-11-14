@@ -41,7 +41,7 @@ package() {
   for _target in ${_targets}; do
     msg "Installing ${_target} headers"
     cd ${srcdir}/headers-${_target}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR=${pkgdir} install
   done
 }
 
