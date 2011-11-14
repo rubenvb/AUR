@@ -34,7 +34,7 @@ build() {
     
     ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
         --target=${_target} \
-        --enable-languages=c,lto,c++,objc,obj-c++,fortran,ada,java \
+        --enable-languages=c,lto,c++,objc,obj-c++,fortran,ada \
         --enable-shared --enable-static \
         --enable-threads=win32 --enable-fully-dynamic-string \
         --with-system-zlib --with-ppl --enable-cloog-backend=isl \
@@ -49,7 +49,11 @@ package() {
   for _target in ${_targets}; do
     cd ${srcdir}/gcc-build-${_target}
     make DESTDIR=${pkgdir} install
+    ${_target}-strip ${pkgdir}/usr/${_target}/lib/*
+    ${_target}-strip ${pkgdir}/usr/lib/gcc/${_target}/*
+    strip ${pkgdir}/usr/libexec/gcc/${_target}/${pkgver}/*
   done
+  strip ${pkgdir}/usr/bin/*
   # remove unnecessary files
   rm -r ${pkgdir}/usr/share
 }
