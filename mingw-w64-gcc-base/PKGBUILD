@@ -2,12 +2,12 @@
 pkgname=mingw-w64-gcc-base
 pkgver=4.6.2
 pkgrel=2
-pkgdesc="Cross GCC for the MinGW-w64 cross-compiler (C compiler only)"
+pkgdesc="Cross GCC for the MinGW-w64 cross-compiler (bootstrap)"
 arch=('i686' 'x86_64')
 url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
-groups=('mingw-w64-toolchain' 'mingw-w64')
-depends=('zlib' 'libmpc' 'ppl' 'cloog' 'mingw-w64-binutils' 'mingw-w64-headers')
+groups=('mingw-w64-bootstrap' 'mingw-w64')
+depends=('zlib' 'libmpc' 'ppl' 'cloog' 'mingw-w64-binutils' 'mingw-w64-headers-base')
 makedepends=('libmpc' 'cloog' 'ppl')
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
@@ -23,16 +23,13 @@ _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
 build() {
   cd ${srcdir}/gcc-${pkgver}
-
   #do not install libiberty
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
 
-  echo ${pkgver} > gcc/BASE-VER
-   
   for _target in ${_targets}; do
     msg "Building ${_target} GCC C compiler"
     mkdir -p ${srcdir}/gcc-build-${_target} && cd ${srcdir}/gcc-build-${_target}
-    
+
     ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
         --target=${_target} \
         --enable-languages=c,lto \
@@ -43,6 +40,18 @@ build() {
         --disable-nls \
         --disable-multilib --enable-checking=release
     make all-gcc
+
+    msg "Building ${_target} CRT"
+    if [ ${_target} == "i686-w64-mingw32" ]; then
+        _crt_configure_args="--disable-lib64 --enable-lib32"
+    elif [ ${_target} == "x86_64-w64-mingw32" ]; then
+        _crt_configure_args="--disable-lib32 --enable-lib64"
+    fi
+    mkdir -p ${srcdir}/crt-${_target} && cd ${srcdir}/crt-${_target}
+    ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-crt/configure --prefix=/usr \
+        --host=${_target} --enable-wildcard \
+        ${_crt_configure_args}
+    make
   done
 }
 
@@ -50,7 +59,7 @@ package() {
   for _target in ${_targets}; do
     msg "Installing ${_target} GCC C compiler"
     cd ${srcdir}/gcc-build-${_target}
-    make prefix=${pkgdir}/usr install-gcc
+    make DESTDIR=${pkgdir} install-gcc
   done
   # remove unnecessary files
   msg "Removing man and info pages"

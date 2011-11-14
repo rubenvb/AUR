@@ -12,7 +12,7 @@ makedepends=('mingw-w64-binutils' 'mingw-w64-headers' 'mingw-w64-crt' 'mingw-w64
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
 provides=('mingw-w64-gcc-base')
-conflicts=('mingw-w64-gcc-base')
+conflicts=('mingw-w64-gcc-bootstrap')
 replaces=()
 backup=()
 options=('!strip' '!libtool' '!emptydirs' '!buildflags')
@@ -48,7 +48,7 @@ build() {
 package() {
   for _target in ${_targets}; do
     cd ${srcdir}/gcc-build-${_target}
-    make prefix=${pkgdir}/usr install
+    make DESTDIR=${pkgdir} install
   done
   # remove unnecessary files
   rm -r ${pkgdir}/usr/share

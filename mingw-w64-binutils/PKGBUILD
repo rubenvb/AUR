@@ -16,7 +16,7 @@ conflicts=()
 replaces=()
 backup=()
 options=('!libtool' '!emptydirs')
-source=(binutils-${pkgver}:http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}a.tar.bz2)
+source=(http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}a.tar.bz2)
 md5sums=('bde820eac53fa3a8d8696667418557ad')
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"

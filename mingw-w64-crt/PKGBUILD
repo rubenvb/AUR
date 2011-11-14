@@ -7,14 +7,14 @@ arch=('any')
 url='http://mingw-w64.sourceforge.net'
 license=('custom')
 groups=('mingw-w64-toolchain' 'mingw-w64')
-depends=('mingw-w64-headers' 'mingw-w64-gcc-base' 'mingw-w64-binutils')
+depends=('mingw-w64-gcc-base' 'mingw-w64-binutils' 'mingw-w64-headers-base')
 makedepends=()
 optdepends=()
-provides=('mingw-w64-headers' 'mingw-w64-winpthreads')
-conflicts=('mingw-w64-headers')
+provides=()
+conflicts=()
 replaces=()
 backup=()
-options=('!strip' '!buildflags' '!libtool')
+options=('!strip' '!buildflags' '!libtool' '!emptydirs')
 source=(http://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v$pkgver.tar.bz2)
 md5sums=('5c6341fbe25576be6f899cbda133cb4a')
 
@@ -22,13 +22,7 @@ _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
 build() {
   cd ${srcdir}
-  msg "Checking out Winpthreads sources"
-  svn co https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/experimental/winpthreads winpthreads
   for _target in ${_targets}; do
-    msg "Configuring ${_target} headers"
-    mkdir -p ${srcdir}/headers-${_target} && cd ${srcdir}/headers-${_target}
-    ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-headers/configure --prefix=/usr --enable-sdk=all --host=${_target}
-  
     msg "Building ${_target} CRT"
     if [ ${_target} == "i686-w64-mingw32" ]; then
         _crt_configure_args="--disable-lib64 --enable-lib32"
@@ -40,12 +34,6 @@ build() {
         --host=${_target} --enable-wildcard \
         ${_crt_configure_args}
     make
-
-    msg "Building ${_target} winpthreads"
-    mkdir -p ${srcdir}/winpthreads-${_target} && cd ${srcdir}/winpthreads-${_target}
-    ${srcdir}/winpthreads/configure --prefix=/usr/${_target} \
-        --host=${_target} --enable-static --enable-shared
-    make
   done
 }
 
@@ -53,14 +41,6 @@ package() {
   for _target in ${_targets}; do
     msg "Installing ${_target} headers"
     cd ${srcdir}/headers-${_target}
-    make DESTDIR="${pkgdir}" install
-    
-    msg "Installing ${_target} CRT"
-    cd ${srcdir}/crt-${_target}
-    make DESTDIR="${pkgdir}" install
-    
-    msg "Installing ${_target} winpthreads"
-    cd ${srcdir}/winpthreads-${_target}
     make DESTDIR="${pkgdir}" install
   done
 }
