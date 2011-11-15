@@ -1,7 +1,7 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-gcc
 pkgver=4.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Cross GCC for the MinGW-w64 cross-compiler"
 arch=('i686' 'x86_64')
 url="http://gcc.gnu.org"
@@ -49,9 +49,10 @@ package() {
   for _target in ${_targets}; do
     cd ${srcdir}/gcc-build-${_target}
     make DESTDIR=${pkgdir} install
-    ${_target}-strip ${pkgdir}/usr/${_target}/lib/*
-    ${_target}-strip ${pkgdir}/usr/lib/gcc/${_target}/*
-    strip ${pkgdir}/usr/libexec/gcc/${_target}/${pkgver}/*
+    ${_target}-strip ${pkgdir}/usr/${_target}/lib/*.a
+    ${_target}-strip ${pkgdir}/usr/${_target}/lib/*.dll
+    ${_target}-strip ${pkgdir}/usr/lib/gcc/${_target}/${pkgver}/*.a
+    strip ${pkgdir}/usr/libexec/gcc/${_target}/${pkgver}/{cc1*,collect2,gnat1,f951,lto*}
   done
   strip ${pkgdir}/usr/bin/*
   # remove unnecessary files
