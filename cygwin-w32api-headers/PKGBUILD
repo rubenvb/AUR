@@ -1,0 +1,35 @@
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
+pkgname=cygwin-w32api-headers
+pkgver=3.17
+pkgrel=1
+pkgdesc="Cygwin w32api headers for Windows"
+arch=('any')
+url="http://www.mingw.org"
+license=('custom')
+groups=('cygwin-toolchain' 'cygwin')
+depends=()
+makedepends=('cygwin-gcc-base')
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=('!strip' '!libtool' '!emptydirs' '!buildflags')
+source=()
+md5sums=()
+source=(ftp://sourceware.org/pub/cygwin/release/w32api/w32api-${pkgver}-2-src.tar.bz2)
+md5sums=('932719403352b79ea50912efc1d372fe')
+
+package() {
+  cd ${srcdir}/w32api-${pkgver}-2
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/directx
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/ddk
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/gdiplus
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/GL
+  install -Dm 644 ./include/*.h ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/
+  install -Dm 644 ./include/directx/*.h ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/directx/
+  install -Dm 644 ./include/ddk/*.h ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/ddk/
+  install -Dm 644 ./include/gdiplus/*.h ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/gdiplus/
+  install -Dm 644 ./include/GL/*.h ${pkgdir}/usr/i686-pc-cygwin/sys-include/w32api/GL/
+}

@@ -1,0 +1,40 @@
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
+pkgname=cygwin-binutils
+pkgver=2.21.1
+pkgrel=1
+pkgdesc="Cross binutils for the Cygwin cross-compiler"
+arch=('i686' 'x86_64')
+url="http://www.gnu.org/software/binutils"
+license=('GPL')
+groups=('cygwin-toolchain' 'cygwin')
+depends=('zlib')
+makedepends=()
+#checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=('!libtool' '!emptydirs')
+source=(http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}a.tar.bz2)
+md5sums=('bde820eac53fa3a8d8696667418557ad')
+
+build() {
+  cd ${srcdir}/binutils-${pkgver}
+  #do not install libiberty
+  sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
+
+  mkdir -p ${srcdir}/binutils-build && cd ${srcdir}/binutils-build
+  ${srcdir}/binutils-${pkgver}/configure --prefix=/usr \
+      --target=i686-pc-cygwin \
+      --infodir=/usr/share/info/i686-pc-cygwin \
+      --enable-lto --enable-plugins \
+      --disable-multilib --disable-nls
+  make
+}
+
+package() {
+  cd ${srcdir}/binutils-build
+  make DESTDIR=${pkgdir} install
+}
+

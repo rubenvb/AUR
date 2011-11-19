@@ -1,0 +1,48 @@
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
+pkgname=cygwin-gcc
+pkgver=4.6.2
+pkgrel=1
+pkgdesc="Cross GCC for the Cygwin cross-compiler (bootstrap)"
+arch=('i686' 'x86_64')
+url="http://gcc.gnu.org"
+license=('GPL' 'LGPL' 'FDL' 'custom')
+groups=('cygwin-bootstrap' 'cygwin')
+depends=('zlib' 'libmpc' 'ppl' 'cloog' 'cygwin-binutils')
+makedepends=('libmpc' 'cloog' 'ppl')
+#checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
+optdepends=()
+provides=()
+conflicts=('cygwin-gcc')
+replaces=()
+backup=()
+options=('!libtool' '!emptydirs')
+source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.bz2)
+md5sums=('780f614ab18c7a9066dec6387d7490b2')
+
+build() {
+  cd ${srcdir}/gcc-${pkgver}
+  #do not install libiberty
+  sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
+
+  mkdir -p ${srcdir}/gcc-build && cd ${srcdir}/gcc-build
+
+  ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
+      --target=i686-pc-cygwin \
+      --enable-languages=c,lto,c++,objc,obj-c++,fortran,ada \
+      --enable-shared --enable-static \
+      --enable-threads=posix \
+      --with-system-zlib --with-ppl --enable-cloog-backend=isl \
+      --enable-lto --enable-dwarf2 --disable-sjlj-exceptions --enable-libgomp \
+      --disable-nls \
+      --enable-checking=release
+  make all-gcc
+}
+
+package() {
+  cd ${srcdir}/gcc-build
+  make DESTDIR=${pkgdir} install-gcc
+  # remove unnecessary files
+  msg "Removing man and info pages"
+  rm -r ${pkgdir}/usr/share/man
+  rm -r ${pkgdir}/usr/share/info
+}

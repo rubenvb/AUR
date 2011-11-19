@@ -1,0 +1,32 @@
+# Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
+pkgname=cygwin-w32api-runtime
+pkgver=1.7.9
+pkgrel=1
+pkgdesc='Cygwin runtime'
+arch=('any')
+url='http://www.mingw.org'
+license=('custom')
+groups=('cygwin-toolchain' 'cygwin')
+depends=('cygwin-gcc-base' 'cygwin-binutils')
+makedepends=()
+optdepends=()
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=('!strip' '!buildflags' '!libtool' '!emptydirs')
+source=(ftp://sourceware.org/pub/cygwin/release/w32api/w32api-${pkgver}-2-src.tar.bz2)
+md5sums=('a8264dc88226e07eeee8127748b1a20f')
+
+build() {
+  mkdir -p ${srcdir}/runtime-build && cd ${srcdir}/runtime-build
+  ${srcdir}/w32-api-${pkgver}-1/configure --prefix=/usr
+}
+
+package() {
+  cd ${srcdir}/runtime-build
+  make DESTDIR=${pkgdir} install
+}
+
+
+
