@@ -8,7 +8,7 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=('mingw-w64-toolchain' 'mingw-w64')
 depends=('zlib' 'libmpc' 'ppl' 'cloog' 'mingw-w64-crt')
-makedepends=('mingw-w64-binutils' 'mingw-w64-headers' 'mingw-w64-crt' 'mingw-w64-winpthreads' 'libmpc' 'cloog' 'ppl' 'gcc-ada=4.6.2')
+makedepends=('mingw-w64-binutils' 'mingw-w64-headers-base' 'mingw-w64-crt' 'mingw-w64-winpthreads' 'libmpc' 'cloog' 'ppl' 'gcc-ada='${pkgver})
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
 provides=('mingw-w64-gcc-base')
