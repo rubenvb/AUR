@@ -21,8 +21,8 @@ The Final Build/Install order
 4. build+install mingw-w64-crt
 5. build mingw-w64-winpthreads
 6. build mingw-w64-headers
-7. install mingw-w64-winpthreads
-8. install mingw-w64-headers (replaces mingw-w64-headers-base)
+7. install mingw-w64-headers (replaces mingw-w64-headers-base)
+8. install mingw-w64-winpthreads
 9. build+install mingw-w64-gcc (replaces mingw-w64-gcc-base)
 
 The resulting binary packages that non-AUR-users
