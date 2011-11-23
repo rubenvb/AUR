@@ -1,7 +1,7 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-crt
 pkgver=2.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc='MinGW-w64 CRT for Windows'
 arch=('any')
 url='http://mingw-w64.sourceforge.net'

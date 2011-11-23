@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
-pkgname=mingw-w64-binutils
-pkgver=2.22
+pkgname=mingw-w64-binutils-cvs
+pkgver=20111123
 pkgrel=1
 pkgdesc="Cross binutils for the MinGW-w64 cross-compiler"
 arch=('i686' 'x86_64')
@@ -8,7 +8,7 @@ url="http://www.gnu.org/software/binutils"
 license=('GPL')
 groups=('mingw-w64-toolchain' 'mingw-w64')
 depends=('zlib')
-makedepends=()
+makedepends=('cvs')
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
 provides=()
@@ -16,12 +16,29 @@ conflicts=()
 replaces=()
 backup=()
 options=('!libtool' '!emptydirs')
-source=("http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2")
-md5sums=('ee0f10756c84979622b992a4a61ea3f5')
+source=()
+md5sums=()
 
+_cvsroot=:pserver:anoncvs@sourceware.org:/cvs/src
+_cvsmod=binutils
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
 build() {
+  cd "$srcdir"
+  msg "Connecting to $_cvsmod.sourceforge.net CVS server...."
+
+  if [[ -d "$_cvsmod/CVS" ]]; then
+    cd "$_cvsmod"
+    cvs -z3 update -d
+  else
+    mkdir -p "$_cvsmod" && cd "$_cvsmod"
+    cvs -z3 -d "$_cvsroot" co -D "$pkgver" -f "$_cvsmod"
+    cd "$_cvsmod"
+  fi
+
+  msg "CVS checkout done or server timeout"
+  msg "Starting build..."
+
   cd ${srcdir}/binutils-${pkgver}
   #do not install libiberty
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
