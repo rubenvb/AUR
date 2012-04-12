@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-winpthreads
-pkgver=0.0.1.20111313
+pkgver=4903
 pkgrel=1
 pkgdesc='MinGW-w64 winpthreads library'
 arch=('any')
@@ -10,7 +10,7 @@ groups=('mingw-w64-toolchain' 'mingw-w64')
 depends=()
 makedepends=('svn' 'mingw-w64-gcc-base' 'mingw-w64-binutils' 'mingw-w64-crt' 'mingw-w64-headers-bootstrap')
 optdepends=()
-provides=()
+provides=('mingw-w64-headers-bootstrap')
 conflicts=()
 replaces=()
 backup=()
