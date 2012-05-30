@@ -1,13 +1,15 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=cygwin-runtime
-pkgver=1.7.9
+pkgver=1.7.15
+_w32apiver=3.17-2
+_libiconvver=1.14-2
 pkgrel=1
 pkgdesc='Cygwin runtime'
 arch=('any')
-url='http://mingw-w64.sourceforge.net'
+url='http://www.cygwin.com'
 license=('custom')
 groups=('cygwin-toolchain' 'cygwin')
-depends=('cygwin-gcc-base' 'cygwin-binutils')
+depends=()
 makedepends=()
 optdepends=()
 provides=()
@@ -15,17 +17,28 @@ conflicts=()
 replaces=()
 backup=()
 options=('!strip' '!buildflags' '!libtool' '!emptydirs')
-source=(ftp://sourceware.org/pub/cygwin/release/cygwin/cygwin-${pkgver}-1-src.tar.bz2)
-md5sums=('a8264dc88226e07eeee8127748b1a20f')
+source=("ftp://ftp.easynet.be/cygwin/release/cygwin/cygwin-${pkgver}-1.tar.bz2"
+        "ftp://ftp.easynet.be/cygwin/release/w32api/w32api-${_w32apiver}.tar.bz2"
+        "ftp://ftp.easynet.be/cygwin/release/libiconv/libiconv-${_libiconvver}.tar.bz2")
+noextract=('cygwin-${pkgver}-1.tar.bz2')
+md5sums=('10f7bbe5f24181c7221ebc72d0e6c655'
+         '1445212ca490e4fc711fd9201d4b1f50'
+         '3076b36bf6abe76e006bd32d4c1ff112')
 
 build() {
-  mkdir -p ${srcdir}/runtime-build && cd ${srcdir}/runtime-build
-  ${srcdir}/cygwin-${pkgver}-1/configure --prefix=/usr --host=i686-pc-cygwin
+  mkdir -p ${srcdir}/build && cd ${srcdir}/build
+  tar xjf ${srcdir}/cygwin-${pkgver}-1.tar.bz2 usr/include usr/lib
+  tar xjf ${srcdir}/w32api-${_w32apiver}.tar.bz2 usr/include usr/lib
+  tar xjf ${srcdir}/libiconv-${_libiconvver}.tar.bz2 usr/include usr/lib
 }
 
 package() {
-  cd ${srcdir}/runtime-build
-  make DESTDIR=${pkgdir} install
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/include
+  mkdir -p ${pkgdir}/usr/i686-pc-cygwin/lib/w32api
+  install -Dm 644 ${srcdir}/build/usr/include/*.h ${pkgdir}/usr/i686-pc-cygwin/include/
+  install -Dm 644 ${srcdir}/build/usr/lib/w32api/*.a ${pkgdir}/usr/i686-pc-cygwin/lib/w32api/
+  install -Dm 644 ${srcdir}/build/usr/lib/*.a ${pkgdir}/usr/i686-pc-cygwin/lib/
+  install -Dm 644 ${srcdir}/build/usr/lib/*.o ${pkgdir}/usr/i686-pc-cygwin/lib/
 }
 
 
