@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=cygwin-gcc-base
-pkgver=4.6.2
+pkgver=4.5.4
 pkgrel=1
 pkgdesc="Cross GCC for the Cygwin cross-compiler (bootstrap)"
 arch=('i686' 'x86_64')
@@ -16,18 +16,23 @@ conflicts=('cygwin-gcc')
 replaces=()
 backup=()
 options=('!libtool' '!emptydirs')
-source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-core-${pkgver}.tar.bz2)
-md5sums=('780f614ab18c7a9066dec6387d7490b2')
+source=("ftp://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-core-${pkgver}.tar.bz2"
+        "ftp://sources.redhat.com/pub/cygwin/release/cygwin/cygwin-1.7.16-1-src.tar.bz2")
+md5sums=('ca62e442629a9a7710f5d797bf1b521c'
+         'a022a762f8efc6af7af46a8e69ce6a36')
 
 build() {
   cd ${srcdir}/gcc-${pkgver}
   #do not install libiberty
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
-
+  #extract winsup stuff
+  tar -xf ${srcdir}/winsup-1.7.16.tar.bz2
+  cp -r src/* .
+  
   mkdir -p ${srcdir}/gcc-build && cd ${srcdir}/gcc-build
 
   ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
-      --target=i686-pc-cygwin \
+      --target=i686-pc-cygwin --with-newlib \
       --enable-languages=c,lto \
       --enable-shared --enable-static \
       --enable-threads=posix \

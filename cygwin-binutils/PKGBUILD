@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=cygwin-binutils
-pkgver=2.21.1
+pkgver=2.22
 pkgrel=1
 pkgdesc="Cross binutils for the Cygwin cross-compiler"
 arch=('i686' 'x86_64')
@@ -16,8 +16,8 @@ conflicts=()
 replaces=()
 backup=()
 options=('!libtool' '!emptydirs')
-source=(http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}a.tar.bz2)
-md5sums=('bde820eac53fa3a8d8696667418557ad')
+source=(http://ftp.gnu.org/gnu/binutils/binutils-${pkgver}.tar.bz2)
+md5sums=('ee0f10756c84979622b992a4a61ea3f5')
 
 build() {
   cd ${srcdir}/binutils-${pkgver}

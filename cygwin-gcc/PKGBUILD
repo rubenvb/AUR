@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=cygwin-gcc
-pkgver=4.6.2
+pkgver=4.5.4
 pkgrel=1
 pkgdesc="Cross GCC for the Cygwin cross-compiler (bootstrap)"
 arch=('i686' 'x86_64')
@@ -8,27 +8,34 @@ url="http://gcc.gnu.org"
 license=('GPL' 'LGPL' 'FDL' 'custom')
 groups=('cygwin-bootstrap' 'cygwin')
 depends=('zlib' 'libmpc' 'ppl' 'cloog' 'cygwin-binutils')
-makedepends=('libmpc' 'cloog' 'ppl')
+makedepends=('libmpc' 'cloog' 'ppl' 'cygwin-gcc-base')
 #checkdepends=('dejagnu') # Windows executables could run on Arch through bin_mft and Wine
 optdepends=()
-provides=()
-conflicts=('cygwin-gcc')
+provides=('cygwin-gcc-base')
+conflicts=('cygwin-gcc-base')
 replaces=()
 backup=()
 options=('!libtool' '!emptydirs')
-source=(ftp://gcc.gnu.org/pub/gcc/releases/gcc-${pkgver}/gcc-${pkgver}.tar.bz2)
-md5sums=('780f614ab18c7a9066dec6387d7490b2')
+source=("ftp://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2"
+        "http://www.mr511.de/software/libelf-0.8.13.tar.gz"
+        "ftp://sources.redhat.com/pub/cygwin/release/cygwin/cygwin-1.7.16-1-src.tar.bz2")
+md5sums=('27e459c2566b8209ab064570e1b378f7'
+         '4136d7b4c04df68b686570afa26988ac'
+         'a022a762f8efc6af7af46a8e69ce6a36')
 
 build() {
   cd ${srcdir}/gcc-${pkgver}
   #do not install libiberty
   sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
-
+  #extract winsup stuff
+  tar -xf ${srcdir}/winsup-1.7.16.tar.bz2
+  cp -r src/* .
+  
   mkdir -p ${srcdir}/gcc-build && cd ${srcdir}/gcc-build
 
-  ${srcdir}/gcc-${pkgver}/configure --prefix=/usr \
-      --target=i686-pc-cygwin \
-      --enable-languages=c,lto,c++,objc,obj-c++,fortran,ada \
+  ${srcdir}/gcc-${pkgver}/configure --prefix=/usr --with-sysroot=/usr \
+      --target=i686-pc-cygwin --with-newlib --without-headers \
+      --enable-languages=c,lto,c++,objc,obj-c++,fortran \
       --enable-shared --enable-static \
       --enable-threads=posix \
       --with-system-zlib --with-ppl --enable-cloog-backend=isl \
