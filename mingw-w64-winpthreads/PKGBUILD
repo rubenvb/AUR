@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-winpthreads
-pkgver=5291
+pkgver=5791
 pkgrel=1
 pkgdesc='MinGW-w64 winpthreads library'
 arch=('any')
@@ -20,7 +20,7 @@ md5sums=()
 
 _svntrunk=https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/experimental
 _svnmod=winpthreads
-_svnrev=5291
+_svnrev=5791
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
@@ -31,7 +31,7 @@ build() {
   if [[ -d ${_svnmod}/.svn ]]; then
     (cd $_svnmod && svn up -r $_svnrev)
   else
-    svn co ${_svntrunk}/${_svnmod} --config-dir ./ -r $_svnrev ${_svnmod}
+    svn co ${_svntrunk}/${_svnmod}@${_svnrev} --config-dir ./ -r $_svnrev ${_svnmod}
   fi
 
   msg "SVN checkout done or server timeout"
