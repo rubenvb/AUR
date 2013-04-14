@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname='mingw-w64-headers'
-pkgver=2.0.7
+pkgver=2.0.8
 pkgrel=1
 pkgdesc="MinGW-w64 headers for Windows"
 arch=('any')
@@ -16,7 +16,7 @@ replaces=()
 backup=()
 options=('!strip' '!libtool' '!emptydirs')
 source=(http://sourceforge.net/projects/mingw-w64/files/mingw-w64/mingw-w64-release/mingw-w64-v${pkgver}.tar.gz)
-md5sums=('07627b66731f40f01eb8547cfdd299eb')
+md5sums=('659e5baf45ac8e8b8526f29786ee1112')
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
