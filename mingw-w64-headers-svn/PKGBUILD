@@ -1,7 +1,7 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname='mingw-w64-headers-svn'
 pkgdesc="MinGW-w64 headers for Windows"
-pkgver=5792
+pkgver=5796
 pkgrel=1
 arch=('any')
 url="http://mingw-w64.sourceforge.net"

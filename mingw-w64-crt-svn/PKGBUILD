@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-crt-svn
-pkgver=5792
+pkgver=5796
 pkgrel=1
 pkgdesc='MinGW-w64 CRT for Windows'
 arch=('any')
