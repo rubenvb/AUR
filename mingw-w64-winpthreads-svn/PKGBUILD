@@ -1,6 +1,6 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-winpthreads-svn
-pkgver=5792
+pkgver=6298
 pkgrel=1
 pkgdesc='MinGW-w64 winpthreads library'
 arch=('any')
@@ -10,12 +10,12 @@ groups=('mingw-w64-toolchain' 'mingw-w64')
 depends=()
 makedepends=('svn' 'mingw-w64-gcc-base' 'mingw-w64-binutils' 'mingw-w64-crt' 'mingw-w64-headers-bootstrap')
 optdepends=()
-provides=('mingw-w64-winpthreads' 'mingw-w64-headers-bootstrap')
+provides=('mingw-w64-winpthreads', 'mingw-w64-headers-bootstrap')
 conflicts=('mingw-w64-headers-bootstrap', 'mingw-w64-winpthreads')
-replaces=()
+replaces=('mingw-w64-headers-bootstrap')
 backup=()
 options=('!strip' '!buildflags' '!libtool' '!emptydirs')
-source=(svn+https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/trunk/mingw-w64-libraries/winpthreads)
+source=(svn+svn://svn.code.sf.net/p/mingw-w64/code/trunk/mingw-w64-libraries/winpthreads)
 md5sums=(SKIP)
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"

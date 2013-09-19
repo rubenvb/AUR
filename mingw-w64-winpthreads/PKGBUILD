@@ -15,29 +15,19 @@ conflicts=('mingw-w64-headers-bootstrap')
 replaces=('mingw-w64-headers-bootstrap')
 backup=()
 options=('!strip' '!buildflags' '!libtool' '!emptydirs')
-source=()
+source=(svn+svn://svn.code.sf.net/p/mingw-w64/code/trunk/mingw-w64-libraries/winpthreads)
 md5sums=()
-
-_svntrunk=https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/experimental
-_svnmod=winpthreads
-_svnrev=5741
 
 _targets="i686-w64-mingw32 x86_64-w64-mingw32"
 
+pkgver() {
+  cd "$SRCDEST/winpthreads"
+  svnversion
+}
+
 build() {
-  cd ${srcdir}
-  msg "Connecting to SVN server...."
-
-  if [[ -d ${_svnmod}/.svn ]]; then
-    (cd $_svnmod && svn up -r $_svnrev)
-  else
-    svn co ${_svntrunk}/${_svnmod}@${_svnrev} --config-dir ./ -r $_svnrev ${_svnmod}
-  fi
-
-  msg "SVN checkout done or server timeout"
-  msg "Starting build..."
-
   for _target in ${_targets}; do
+    msg "Building ${_target} winpthreads..."
     mkdir -p ${srcdir}/winpthreads-build-${_target} && cd ${srcdir}/winpthreads-build-${_target}
     ${srcdir}/winpthreads/configure --prefix=/usr/${_target} \
         --host=${_target} --enable-static --enable-shared
