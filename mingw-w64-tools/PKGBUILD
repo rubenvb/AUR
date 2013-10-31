@@ -1,8 +1,8 @@
 # Maintainer: rubenvb vanboxem <dottie> ruben <attie> gmail <dottie> com
 pkgname=mingw-w64-tools
 pkgver=3.0.0
-pkgrel=1
-pkgdesc='MinGW-w64 gendef and genidl tools'
+pkgrel=2
+pkgdesc='MinGW-w64 gendef, genidl, genpeimg, and widl tools.'
 arch=('i686' 'x86_64')
 url='http://mingw-w64.sourceforge.net'
 license=('custom')
@@ -27,6 +27,14 @@ build() {
   mkdir -p ${srcdir}/genidl-build && cd ${srcdir}/genidl-build
     ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/genidl/configure --prefix=/usr
     make
+  
+  mkdir -p ${srcdir}/genpeimg-build && cd ${srcdir}/genpeimg-build
+    ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/genpeimg/configure --prefix=/usr
+    make
+  
+  mkdir -p ${srcdir}/widl-build && cd ${srcdir}/widl-build
+    ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/widl/configure --prefix=/usr
+    make
 }
 
 package() {
@@ -35,8 +43,14 @@ package() {
   make DESTDIR=${pkgdir} install
   cd ${srcdir}/genidl-build
   make DESTDIR=${pkgdir} install
+  cd ${srcdir}/genpeimg-build
+  make DESTDIR=${pkgdir} install
+  cd ${srcdir}/widl-build
+  make DESTDIR=${pkgdir} install
   msg "Installing licenses"
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/gendef/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.gendef
   install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/genidl/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.genidl
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/gendpeimg/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.genpeimg
+  install -Dm644 ${srcdir}/mingw-w64-v${pkgver}/mingw-w64-tools/widl/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.widl
 }
 

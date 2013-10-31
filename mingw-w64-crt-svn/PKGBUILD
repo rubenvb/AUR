@@ -14,7 +14,7 @@ provides=('mingw-w64-crt')
 conflicts=('mingw-w64-crt')
 replaces=()
 backup=()
-options=('!strip' 'staticlibs' '!libtool' '!emptydirs')
+options=('!strip' 'staticlibs' 'staticlibs' '!emptydirs')
 source=(svn+svn://svn.code.sf.net/p/mingw-w64/code/trunk/mingw-w64-crt)
 md5sums=(SKIP)
 
