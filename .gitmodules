@@ -1,0 +1,12 @@
+[submodule "gcc49"]
+	path = gcc49
+	url = ssh://aur@aur4.archlinux.org/gcc49.git
+[submodule "qtermwidget"]
+	path = qtermwidget
+	url = ssh://aur@aur4.archlinux.org/qtermwidget
+[submodule "clfft"]
+	path = clfft
+	url = ssh://aur@aur4.archlinux.org/clfft.git
+[submodule "clfft-git"]
+	path = clfft-git
+	url = ssh://aur@aur4.archlinux.org/clfft-git.git
