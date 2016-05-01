@@ -10,3 +10,6 @@
 [submodule "clfft-git"]
 	path = clfft-git
 	url = ssh://aur@aur4.archlinux.org/clfft-git.git
+[submodule "stack-client-bin"]
+	path = stack-client-bin
+	url = git+ssh://aur@aur.archlinux.org/stack-client-bin.git
