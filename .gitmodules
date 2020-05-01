@@ -16,3 +16,6 @@
 [submodule "mali-midgard-dkms"]
 	path = mali-midgard-dkms
 	url = ./mali-midgard-dkms/
+[submodule "rkmpp-git"]
+	path = rkmpp-git
+	url = ./rkmpp-git
