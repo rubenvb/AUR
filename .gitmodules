@@ -13,3 +13,6 @@
 [submodule "stack-client-bin"]
 	path = stack-client-bin
 	url = git+ssh://aur@aur.archlinux.org/stack-client-bin.git
+[submodule "mali-midgard-dkms"]
+	path = mali-midgard-dkms
+	url = ./mali-midgard-dkms/
